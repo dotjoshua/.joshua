@@ -1,0 +1,74 @@
+body, html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#jsh_alert_container {
+    height: 100%;
+    width: 100%;
+    background: rgba(30, 30, 30, 0.7);
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+    z-index: 1000;
+}
+
+#jsh_alert_window {
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    background: #E6E3E1;
+}
+
+#jsh_alert_title {
+    color: #2B415D;
+    font-weight: 800;
+}
+
+#jsh_alert_message {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: #666;
+    overflow-x: scroll;
+}
+
+#jsh_alert_buttons {
+    text-align: right;
+}
+
+.jsh_alert_button {
+    cursor: pointer;
+    padding-left: 10px;
+    color: #333;
+    -webkit-transition: color 0.5s;
+    -moz-transition: color 0.5s;
+    -ms-transition: color 0.5s;
+    -o-transition: color 0.5s;
+    transition: color 0.5s;
+}
+
+.jsh_alert_button:hover {
+    color: #E37954;
+}
+
+.jsh_transparent {
+    opacity: 0 !important;
+}
+
+.jsh_display_none {
+    display: None !important;
+}
+
+.jsh_blurred {
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+}

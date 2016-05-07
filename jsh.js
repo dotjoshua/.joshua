@@ -24,29 +24,29 @@ var jsh = {
             jsh.select("#jsh_alert_button").js.innerHTML = button_text;
             jsh.select("#jsh_alert_cancel").js.innerHTML = cancel_button_text;
             if (show_cancel) {
-                jsh.select("#jsh_alert_cancel").remove_class("display_none");
+                jsh.select("#jsh_alert_cancel").remove_class("jsh_display_none");
             } else {
-                jsh.select("#jsh_alert_cancel").add_class("display_none");
+                jsh.select("#jsh_alert_cancel").add_class("jsh_display_none");
             }
 
-            jsh.select("#jsh_alert_container").remove_class("display_none");
+            jsh.select("#jsh_alert_container").remove_class("jsh_display_none");
             setTimeout(function() {
-                jsh.select("#jsh_alert_container").remove_class("transparent");
+                jsh.select("#jsh_alert_container").remove_class("jsh_transparent");
             }, 10);
 
             jsh.select("#jsh_alert_button").js.onclick = button_callback;
             jsh.select("#jsh_alert_cancel").js.onclick = cancel_callback;
 
-            jsh.select("#content").add_class("blurred");
+            jsh.select("#content").add_class("jsh_blurred");
         },
 
         close: function() {
-            jsh.select("#jsh_alert_container").add_class("transparent");
+            jsh.select("#jsh_alert_container").add_class("jsh_transparent");
             setTimeout(function() {
-                jsh.select("#jsh_alert_container").add_class("display_none");
+                jsh.select("#jsh_alert_container").add_class("jsh_display_none");
             }, 500);
 
-            jsh.select("#content").remove_class("blurred");
+            jsh.select("#content").remove_class("jsh_blurred");
         }
     },
 
@@ -151,8 +151,8 @@ var jsh = {
     setup: function() {
         var container = document.createElement("div");
         container.id = "jsh_alert_container";
-        container.classList.add("transparent");
-        container.classList.add("display_none");
+        container.classList.add("jsh_transparent");
+        container.classList.add("jsh_display_none");
 
         var window = document.createElement("div");
         window.id = "jsh_alert_window";
