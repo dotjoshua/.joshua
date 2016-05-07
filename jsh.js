@@ -23,6 +23,7 @@ var jsh = {
             jsh.select("#jsh_alert_title").js.innerHTML = title;
             jsh.select("#jsh_alert_button").js.innerHTML = button_text;
             jsh.select("#jsh_alert_cancel").js.innerHTML = cancel_button_text;
+
             if (show_cancel) {
                 jsh.select("#jsh_alert_cancel").remove_class("jsh_display_none");
             } else {
@@ -68,7 +69,7 @@ var jsh = {
                     }
                     prefix = "&";
                 }
-                args.url += param_string;
+                args.url += param_string == "?" ? "" : param_string;
             }
 
             var request = new XMLHttpRequest();
