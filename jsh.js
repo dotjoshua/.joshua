@@ -50,53 +50,6 @@ var jsh = {
         }
     },
 
-    select: function(selector) {
-        if (selector[0] == "#") {
-            selector = selector.substr(1);
-
-            var js_object = document.getElementById(selector);
-            return js_object == undefined ? undefined : jsh.cm.DOM_Object(js_object);
-        } else if (selector[0] == ".") {
-            selector = selector.substr(1);
-
-            var elements = [];
-            var js_objects = document.getElementsByClassName(selector);
-
-            for (var i = 0; i < js_objects.length; i++) {
-                elements.push(new jsh.cm.DOM_Object(js_objects[i]));
-            }
-
-            return elements;
-        } else {
-            selector = selector.substr(1);
-
-            elements = [];
-            js_objects = document.getElementsByTagName(selector);
-
-            for (i = 0; i < js_objects.length; i++) {
-                elements.push(new jsh.cm.DOM_Object(js_objects[i]));
-            }
-
-            return elements;
-        }
-    },
-
-    cm: {
-        DOM_Object: function(js_object) {
-            this.js = js_object;
-
-            this.add_class = function (class_name) {
-                this.js.classList.add(class_name);
-            };
-
-            this.remove_class = function(class_name) {
-                this.js.classList.remove(class_name);
-            };
-
-            return this;
-        }
-    },
-
     req: {
         send: function(args) {
             args.url = (args.url == undefined) ? "" : args.url;
@@ -148,46 +101,93 @@ var jsh = {
         }
     },
 
-    setup: function() {
-        if (jsh.select("#content") == undefined) {
-            var content = document.createElement("div");
-            content.id = "content";
-            document.body.appendChild(content);
+    select: function(selector) {
+        if (selector[0] == "#") {
+            selector = selector.substr(1);
+
+            var js_object = document.getElementById(selector);
+            return js_object == undefined ? undefined : jsh.cm.DOM_Object(js_object);
+        } else if (selector[0] == ".") {
+            selector = selector.substr(1);
+
+            var elements = [];
+            var js_objects = document.getElementsByClassName(selector);
+
+            for (var i = 0; i < js_objects.length; i++) {
+                elements.push(new jsh.cm.DOM_Object(js_objects[i]));
+            }
+
+            return elements;
+        } else {
+            selector = selector.substr(1);
+
+            elements = [];
+            js_objects = document.getElementsByTagName(selector);
+
+            for (i = 0; i < js_objects.length; i++) {
+                elements.push(new jsh.cm.DOM_Object(js_objects[i]));
+            }
+
+            return elements;
         }
+    },
 
-        var container = document.createElement("div");
-        container.id = "jsh_alert_container";
-        container.classList.add("jsh_transparent");
-        container.classList.add("jsh_display_none");
+    cm: {
+        DOM_Object: function(js_object) {
+            this.js = js_object;
 
-        var window = document.createElement("div");
-        window.id = "jsh_alert_window";
+            this.add_class = function (class_name) {
+                this.js.classList.add(class_name);
+            };
 
-        var title = document.createElement("div");
-        title.id = "jsh_alert_title";
+            this.remove_class = function(class_name) {
+                this.js.classList.remove(class_name);
+            };
 
-        var message = document.createElement("div");
-        message.id = "jsh_alert_message";
+            return this;
+        },
 
-        var buttons = document.createElement("div");
-        buttons.id = "jsh_alert_buttons";
+        setup: function() {
+            if (jsh.select("#content") == undefined) {
+                var content = document.createElement("div");
+                content.id = "content";
+                document.body.appendChild(content);
+            }
 
-        var cancel = document.createElement("span");
-        cancel.classList.add("alert_button");
-        cancel.id = "jsh_alert_cancel";
+            var container = document.createElement("div");
+            container.id = "jsh_alert_container";
+            container.classList.add("jsh_transparent");
+            container.classList.add("jsh_display_none");
 
-        var button = document.createElement("span");
-        button.classList.add("alert_button");
-        button.id = "jsh_alert_button";
+            var window = document.createElement("div");
+            window.id = "jsh_alert_window";
 
-        buttons.appendChild(cancel);
-        buttons.appendChild(button);
-        window.appendChild(title);
-        window.appendChild(message);
-        window.appendChild(buttons);
-        container.appendChild(window);
-        document.body.appendChild(container);
+            var title = document.createElement("div");
+            title.id = "jsh_alert_title";
+
+            var message = document.createElement("div");
+            message.id = "jsh_alert_message";
+
+            var buttons = document.createElement("div");
+            buttons.id = "jsh_alert_buttons";
+
+            var cancel = document.createElement("span");
+            cancel.classList.add("alert_button");
+            cancel.id = "jsh_alert_cancel";
+
+            var button = document.createElement("span");
+            button.classList.add("alert_button");
+            button.id = "jsh_alert_button";
+
+            buttons.appendChild(cancel);
+            buttons.appendChild(button);
+            window.appendChild(title);
+            window.appendChild(message);
+            window.appendChild(buttons);
+            container.appendChild(window);
+            document.body.appendChild(container);
+        }
     }
 };
 
-window.onload = jsh.setup;
+window.onload = jsh.cm.setup;
