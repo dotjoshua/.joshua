@@ -1,15 +1,15 @@
-function jsh() {
-    function alert() {
+var jsh = {
+    alert: function() {
         function open(message, title, args) {
             args = (args == null) ? {} : args;
             message = (message == null) ? "" : message;
             title = (title == null) ? "" : title;
 
-            var button_text = args.button_text;
-            var show_cancel = args.show_cancel;
-            var button_callback = args.button_callback;
-            var cancel_callback = args.cancel_callback;
-            var cancel_button_text = args.cancel_button_text;
+            var button_text = args["button_text"];
+            var show_cancel = args["show_cancel"];
+            var button_callback = args["button_callback"];
+            var cancel_callback = args["cancel_callback"];
+            var cancel_button_text = args["cancel_button_text"];
 
             button_text = (button_text == undefined) ? "ok" : button_text;
             button_callback = (button_callback == undefined) ? function() {close()} : button_callback;
@@ -19,43 +19,43 @@ function jsh() {
 
             document.activeElement.blur();
 
-            select("id", "alert_message").js_object.innerHTML = message;
-            select("id", "alert_title").js_object.innerHTML = title;
-            select("id", "alert_button").js_object.innerHTML = button_text;
-            select("id", "alert_cancel").js_object.innerHTML = cancel_button_text;
+            jsh.select("id", "alert_message").js_object.innerHTML = message;
+            jsh.select("id", "alert_title").js_object.innerHTML = title;
+            jsh.select("id", "alert_button").js_object.innerHTML = button_text;
+            jsh.select("id", "alert_cancel").js_object.innerHTML = cancel_button_text;
             if (show_cancel) {
-                select("id", "alert_cancel").remove_class("display_none");
+                jsh.select("id", "alert_cancel").remove_class("display_none");
             } else {
-                select("id", "alert_cancel").add_class("display_none");
+                jsh.select("id", "alert_cancel").add_class("display_none");
             }
 
-            select("id", "alert_container").remove_class("display_none");
+            jsh.select("id", "alert_container").remove_class("display_none");
             setTimeout(function() {
-                select("id", "alert_container").remove_class("transparent");
+                jsh.select("id", "alert_container").remove_class("transparent");
             }, 10);
 
-            select("id", "alert_button").js_object.onclick = button_callback;
-            select("id", "alert_cancel").js_object.onclick = cancel_callback;
+            jsh.select("id", "alert_button").js_object.onclick = button_callback;
+            jsh.select("id", "alert_cancel").js_object.onclick = cancel_callback;
 
-            select("id", "content").add_class("blurred");
+            jsh.select("id", "content").add_class("blurred");
         }
 
         function close() {
-            select("id", "alert_container").add_class("transparent");
+            jsh.select("id", "alert_container").add_class("transparent");
             setTimeout(function() {
-                select("id", "alert_container").add_class("display_none");
+                jsh.select("id", "alert_container").add_class("display_none");
             }, 500);
 
-            select("id", "content").remove_class("blurred");
+            jsh.select("id", "content").remove_class("blurred");
         }
-    }
+    },
 
-    function select(selector) {
+    select: function(selector) {
         if (selector[0] == "id") {
             selector = selector.substr(1);
 
             var js_object = document.getElementById(selector);
-            return js_object == undefined ? undefined : cm.DOM_Object(js_object);
+            return js_object == undefined ? undefined : jsh.cm.DOM_Object(js_object);
         }
 
         if (selector[0] == ".") {
@@ -65,16 +65,16 @@ function jsh() {
             var js_objects = document.getElementsByClassName(selector);
 
             for (var i = 0; i < js_objects.length; i++) {
-                elements.push(new cm.DOM_Object(js_objects[i]));
+                elements.push(new jsh.cm.DOM_Object(js_objects[i]));
             }
 
             return elements;
         }
 
         return null;
-    }
+    },
 
-    function cm() {
+    cm: function() {
         function DOM_Object(js_object) {
             this.js_object = js_object;
             this.classes = this.js_object.className == undefined ? [] : this.js_object.className.split(" ");
@@ -94,10 +94,10 @@ function jsh() {
             };
             return this;
         }
-    }
+    },
 
-    function req() {
-        function send(args) {
+    req: {
+        send: function(args) {
             args.url = (args.url == undefined) ? "" : args.url;
             args.data = (args.data == undefined) ? {} : args.data;
             args.post = (args.post == undefined) ? false : args.post;
@@ -134,20 +134,20 @@ function jsh() {
                 }
             };
             request.send(args.post ? JSON.stringify(args.data) : undefined);
-        }
+        },
 
-        function get(args) {
+        get: function(args) {
             args.post = false;
-            send(args);
-        }
+            jsh.req.send(args);
+        },
 
-        function post(args) {
+        post: function(args) {
             args.post = true;
-            send(args);
+            jsh.req.send(args);
         }
-    }
+    },
 
-    function setup() {
+    setup: function() {
         var container = document.createElement("div");
         container.id = "jsh_alert_container";
         container.classList.add("transparent");
@@ -181,4 +181,4 @@ function jsh() {
         container.appendChild(window);
         document.body.appendChild(container);
     }
-}
+};
