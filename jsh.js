@@ -19,34 +19,34 @@ var jsh = {
 
             document.activeElement.blur();
 
-            jsh.select("id", "jsh_alert_message").js.innerHTML = message;
-            jsh.select("id", "jsh_alert_title").js.innerHTML = title;
-            jsh.select("id", "jsh_alert_button").js.innerHTML = button_text;
-            jsh.select("id", "jsh_alert_cancel").js.innerHTML = cancel_button_text;
+            jsh.select("#jsh_alert_message").js.innerHTML = message;
+            jsh.select("#jsh_alert_title").js.innerHTML = title;
+            jsh.select("#jsh_alert_button").js.innerHTML = button_text;
+            jsh.select("#jsh_alert_cancel").js.innerHTML = cancel_button_text;
             if (show_cancel) {
-                jsh.select("id", "jsh_alert_cancel").remove_class("display_none");
+                jsh.select("#jsh_alert_cancel").remove_class("display_none");
             } else {
-                jsh.select("id", "jsh_alert_cancel").add_class("display_none");
+                jsh.select("#jsh_alert_cancel").add_class("display_none");
             }
 
-            jsh.select("id", "jsh_alert_container").remove_class("display_none");
+            jsh.select("#jsh_alert_container").remove_class("display_none");
             setTimeout(function() {
-                jsh.select("id", "jsh_alert_container").remove_class("transparent");
+                jsh.select("#jsh_alert_container").remove_class("transparent");
             }, 10);
 
-            jsh.select("id", "jsh_alert_button").js.onclick = button_callback;
-            jsh.select("id", "jsh_alert_cancel").js.onclick = cancel_callback;
+            jsh.select("#jsh_alert_button").js.onclick = button_callback;
+            jsh.select("#jsh_alert_cancel").js.onclick = cancel_callback;
 
-            jsh.select("id", "content").add_class("blurred");
+            jsh.select("#content").add_class("blurred");
         },
 
         close: function() {
-            jsh.select("id", "jsh_alert_container").add_class("transparent");
+            jsh.select("#jsh_alert_container").add_class("transparent");
             setTimeout(function() {
-                jsh.select("id", "jsh_alert_container").add_class("display_none");
+                jsh.select("#jsh_alert_container").add_class("display_none");
             }, 500);
 
-            jsh.select("id", "content").remove_class("blurred");
+            jsh.select("#content").remove_class("blurred");
         }
     },
 
