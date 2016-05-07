@@ -51,14 +51,12 @@ var jsh = {
     },
 
     select: function(selector) {
-        if (selector[0] == "id") {
+        if (selector[0] == "#") {
             selector = selector.substr(1);
 
             var js_object = document.getElementById(selector);
             return js_object == undefined ? undefined : jsh.cm.DOM_Object(js_object);
-        }
-
-        if (selector[0] == ".") {
+        } else if (selector[0] == ".") {
             selector = selector.substr(1);
 
             var elements = [];
@@ -69,9 +67,18 @@ var jsh = {
             }
 
             return elements;
-        }
+        } else {
+            selector = selector.substr(1);
 
-        return null;
+            elements = [];
+            js_objects = document.getElementsByTagName(selector);
+
+            for (i = 0; i < js_objects.length; i++) {
+                elements.push(new jsh.cm.DOM_Object(js_objects[i]));
+            }
+
+            return elements;
+        }
     },
 
     cm: {
