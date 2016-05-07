@@ -1,4 +1,14 @@
-# Endpoints:
+# Endpoint:
 
 http://jsh.cm/lib/
-http://dotjoshua.com/lib/
+
+# Contents:
+* jsh
+  * .alert
+    * .open
+    * .close
+  * .req
+    * .send
+    * .post
+    * .get
+  * .select
