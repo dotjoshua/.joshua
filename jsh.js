@@ -149,6 +149,12 @@ var jsh = {
     },
 
     setup: function() {
+        if (jsh.select("#content") == undefined) {
+            var content = document.createElement("div");
+            content.id = "content";
+            document.body.appendChild(content);
+        }
+
         var container = document.createElement("div");
         container.id = "jsh_alert_container";
         container.classList.add("jsh_transparent");
