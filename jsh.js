@@ -1,6 +1,6 @@
 var jsh = {
-    alert: function() {
-        function open(message, title, args) {
+    alert: {
+        open: function(message, title, args) {
             args = (args == null) ? {} : args;
             message = (message == null) ? "" : message;
             title = (title == null) ? "" : title;
@@ -19,10 +19,10 @@ var jsh = {
 
             document.activeElement.blur();
 
-            jsh.select("id", "alert_message").js_object.innerHTML = message;
-            jsh.select("id", "alert_title").js_object.innerHTML = title;
-            jsh.select("id", "alert_button").js_object.innerHTML = button_text;
-            jsh.select("id", "alert_cancel").js_object.innerHTML = cancel_button_text;
+            jsh.select("id", "alert_message").js.innerHTML = message;
+            jsh.select("id", "alert_title").js.innerHTML = title;
+            jsh.select("id", "alert_button").js.innerHTML = button_text;
+            jsh.select("id", "alert_cancel").js.innerHTML = cancel_button_text;
             if (show_cancel) {
                 jsh.select("id", "alert_cancel").remove_class("display_none");
             } else {
@@ -34,13 +34,13 @@ var jsh = {
                 jsh.select("id", "alert_container").remove_class("transparent");
             }, 10);
 
-            jsh.select("id", "alert_button").js_object.onclick = button_callback;
-            jsh.select("id", "alert_cancel").js_object.onclick = cancel_callback;
+            jsh.select("id", "alert_button").js.onclick = button_callback;
+            jsh.select("id", "alert_cancel").js.onclick = cancel_callback;
 
             jsh.select("id", "content").add_class("blurred");
-        }
+        },
 
-        function close() {
+        close: function() {
             jsh.select("id", "alert_container").add_class("transparent");
             setTimeout(function() {
                 jsh.select("id", "alert_container").add_class("display_none");
@@ -74,24 +74,18 @@ var jsh = {
         return null;
     },
 
-    cm: function() {
-        function DOM_Object(js_object) {
-            this.js_object = js_object;
-            this.classes = this.js_object.className == undefined ? [] : this.js_object.className.split(" ");
+    cm: {
+        DOM_Object: function(js_object) {
+            this.js = js_object;
 
             this.add_class = function (class_name) {
-                if (this.classes.indexOf(class_name) == -1) {
-                    this.classes.push(class_name);
-                }
-                this.js_object.className = this.classes.join(" ");
+                this.js.classList.add(class_name);
             };
 
             this.remove_class = function(class_name) {
-                if (this.classes.indexOf(class_name) != -1) {
-                    this.classes.splice(this.classes.indexOf(class_name), 1);
-                }
-                this.js_object.className = this.classes.join(" ");
+                this.js.classList.remove(class_name);
             };
+            
             return this;
         }
     },
