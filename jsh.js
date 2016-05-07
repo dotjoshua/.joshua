@@ -103,7 +103,7 @@ var jsh = {
             args.data = (args.data == undefined) ? {} : args.data;
             args.post = (args.post == undefined) ? false : args.post;
             args.async = (args.async == undefined) ? true : args.async;
-            args.parse_json = (args.parse_json == undefined) ? true : args.parse_json;
+            args.parse_json = (args.parse_json == undefined) ? false : args.parse_json;
             args.callback = (args.callback == undefined) ? function(result) {} : args.callback;
 
             if (!args.post) {
