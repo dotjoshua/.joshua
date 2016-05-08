@@ -3,12 +3,12 @@
 http://jsh.cm/lib/
 
 # Contents:
-* jsh
-  * .alert
-    * .open
-    * .close
-  * .req
-    * .send
-    * .post
-    * .get
-  * .select
+
+```
+jsh.alert.open()
+jsh.alert.close()
+jsh.req.send()
+jsh.req.post()
+jsh.req.get()
+jsh.select()
+```
