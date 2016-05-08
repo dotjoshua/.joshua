@@ -12,8 +12,8 @@ var jsh = {
             var cancel_button_text = args["cancel_button_text"];
 
             button_text = (button_text == undefined) ? "ok" : button_text;
-            button_callback = (button_callback == undefined) ? function() {close()} : button_callback;
-            cancel_callback = (cancel_callback == undefined) ? function() {close()} : cancel_callback;
+            button_callback = (button_callback == undefined) ? function() {jsh.alert.close()} : button_callback;
+            cancel_callback = (cancel_callback == undefined) ? function() {jsh.alert.close()} : cancel_callback;
             show_cancel = (show_cancel == undefined) ? false : show_cancel;
             cancel_button_text = (cancel_button_text == undefined) ? "cancel" : cancel_button_text;
 
@@ -173,11 +173,11 @@ var jsh = {
             buttons.id = "jsh_alert_buttons";
 
             var cancel = document.createElement("span");
-            cancel.classList.add("alert_button");
+            cancel.classList.add("jsh_alert_button");
             cancel.id = "jsh_alert_cancel";
 
             var button = document.createElement("span");
-            button.classList.add("alert_button");
+            button.classList.add("jsh_alert_button");
             button.id = "jsh_alert_button";
 
             buttons.appendChild(cancel);
