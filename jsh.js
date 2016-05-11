@@ -107,7 +107,7 @@ var jsh = {
             selector = selector.substr(1);
 
             var js_object = document.getElementById(selector);
-            return js_object == undefined ? undefined : jsh.cm.DOM_Object(js_object);
+            return js_object == undefined ? undefined : new jsh.cm.DOM_Object(js_object);
         } else if (selector[0] == ".") {
             selector = selector.substr(1);
 
