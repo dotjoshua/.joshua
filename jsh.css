@@ -28,12 +28,11 @@ body, html {
     padding: 20px;
     width: 100%;
     max-width: 500px;
-    background: #E6E3E1;
+    background: #eee;
 }
 
 #jsh_alert_title {
-    color: #2B415D;
-    font-weight: 800;
+    color: #333;
 }
 
 #jsh_alert_message {
@@ -59,7 +58,7 @@ body, html {
 }
 
 .jsh_alert_button:hover {
-    color: #E37954;
+    color: #aaa;
 }
 
 .jsh_transparent {
