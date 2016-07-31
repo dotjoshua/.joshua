@@ -39,6 +39,50 @@ var jsh = {
             }, 500);
 
             jsh.get("#content").classList.remove("jsh_blurred");
+        };
+    },
+
+    Page: function(args) {
+        this.args = args || {};
+        this.args.name = this.args.name || "";
+        this.args.content = this.args.content || document.createElement("div");
+
+        this.name = this.args.name;
+        this.div = args.div;
+
+        if (!this.div) {
+            this.div = document.createElement("div");
+            this.div.id = jsh.str("page_{}", this.args.name);
+            this.div.classList.add("page");
+            this.div.classList.add("jsh_transparent");
+            this.div.classList.add("jsh_display_none");
+
+            this.div.appendChild(this.args.content);
+            jsh.get("#content").appendChild(this.div);
+        }
+
+        jsh.pages[this.name] = this;
+
+        var target_page = this;
+        this.open = function() {
+            for (var page in jsh.pages) {
+                if (jsh.pages.hasOwnProperty(page) && page != target_page.name) {
+                    jsh.pages[page].div.classList.add("jsh_transparent");
+                }
+            }
+
+            setTimeout(function() {
+                for (var page in jsh.pages) {
+                    if (jsh.pages.hasOwnProperty(page) && page != target_page.name) {
+                        jsh.pages[page].div.classList.add("jsh_display_none");
+                    }
+                }
+
+                target_page.div.classList.remove("jsh_display_none");
+                setTimeout(function() {
+                    target_page.div.classList.remove("jsh_transparent");
+                }, 10)
+            }, 500);
         }
     },
 
@@ -99,6 +143,16 @@ var jsh = {
         }
     },
 
+    str: function() {
+        var result = arguments[0];
+
+        for (var i = 1; i < arguments.length; i++) {
+            result = result.replace("{}", arguments[i]);
+        }
+
+        return result;
+    },
+
     get: function(selector) {
         if (selector[0] == "#") {
             return document.getElementById(selector.substr(1));
@@ -107,49 +161,78 @@ var jsh = {
         } else {
             return document.getElementsByTagName(selector);
         }
+    },
+
+    __init__: {
+        general: function() {
+            if (!jsh.get("#content")) {
+                var content = document.createElement("div");
+                content.id = "content";
+                document.body.appendChild(content);
+            }
+        },
+
+        alert: function() {
+            var container = document.createElement("div");
+            container.id = "jsh_alert_container";
+            container.classList.add("jsh_transparent");
+            container.classList.add("jsh_display_none");
+
+            var window = document.createElement("div");
+            window.id = "jsh_alert_window";
+
+            var title = document.createElement("div");
+            title.id = "jsh_alert_title";
+
+            var message = document.createElement("div");
+            message.id = "jsh_alert_message";
+
+            var buttons = document.createElement("div");
+            buttons.id = "jsh_alert_buttons";
+
+            var cancel = document.createElement("span");
+            cancel.classList.add("jsh_alert_button");
+            cancel.id = "jsh_alert_cancel";
+
+            var button = document.createElement("span");
+            button.classList.add("jsh_alert_button");
+            button.id = "jsh_alert_button";
+
+            buttons.appendChild(cancel);
+            buttons.appendChild(button);
+            window.appendChild(title);
+            window.appendChild(message);
+            window.appendChild(buttons);
+            container.appendChild(window);
+            document.body.appendChild(container);
+        },
+
+        pages: function() {
+            jsh.pages = {};
+
+            var pages = jsh.get("#content").children;
+            for (var i = 0; i < pages.length; i++) {
+                if (!pages[i].classList.contains("page")) return;
+
+                var name = pages[i].id.length > 5 ? pages[i].id.slice(5) : "";
+
+                new jsh.Page({
+                    name: name,
+                    div: pages[i]
+                });
+            }
+        }
+    },
+
+    cm: function() {
+        jsh.__init__.general();
+        jsh.__init__.alert();
+        jsh.__init__.pages();
     }
 };
 
 var jsh_window_onload = window.onload;
 window.onload = function() {
-    if (!jsh.get("#content")) {
-        var content = document.createElement("div");
-        content.id = "content";
-        document.body.appendChild(content);
-    }
-
-    var container = document.createElement("div");
-    container.id = "jsh_alert_container";
-    container.classList.add("jsh_transparent");
-    container.classList.add("jsh_display_none");
-
-    var window = document.createElement("div");
-    window.id = "jsh_alert_window";
-
-    var title = document.createElement("div");
-    title.id = "jsh_alert_title";
-
-    var message = document.createElement("div");
-    message.id = "jsh_alert_message";
-
-    var buttons = document.createElement("div");
-    buttons.id = "jsh_alert_buttons";
-
-    var cancel = document.createElement("span");
-    cancel.classList.add("jsh_alert_button");
-    cancel.id = "jsh_alert_cancel";
-
-    var button = document.createElement("span");
-    button.classList.add("jsh_alert_button");
-    button.id = "jsh_alert_button";
-
-    buttons.appendChild(cancel);
-    buttons.appendChild(button);
-    window.appendChild(title);
-    window.appendChild(message);
-    window.appendChild(buttons);
-    container.appendChild(window);
-    document.body.appendChild(container);
-
+    jsh.cm();
     if (jsh_window_onload) jsh_window_onload();
 };

@@ -6,6 +6,15 @@ body, html {
     font-weight: 100;
 }
 
+#content {
+    height: 100%;
+    width: 100%;
+}
+
+.page {
+    transition: opacity 0.5s;
+}
+
 #jsh_alert_container {
     height: 100%;
     width: 100%;
