@@ -60,7 +60,7 @@ var jsh = new function() {
 
         if (!this.div) {
             this.div = document.createElement("div");
-            this.div.id = this.str("page_{}", this.args.name);
+            this.div.id = jsh.str("page_{}", this.args.name);
             this.div.classList.add("page");
             this.div.classList.add("jsh_transparent");
             this.div.classList.add("jsh_display_none");
@@ -231,7 +231,7 @@ var jsh = new function() {
 
             var pages = jsh.get("#content").children;
             for (var i = 0; i < pages.length; i++) {
-                if (!pages[i].classList.contains("page")) return;
+                if (!pages[i].classList.contains("page")) continue;
 
                 var name = pages[i].id.length > 5 ? pages[i].id.slice(5) : "";
 
