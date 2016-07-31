@@ -1,6 +1,6 @@
 # About:
 
-Basic functions I often use during web development.
+My usual toolkit for building asynchronous web applications.
 
 # Endpoints:
 

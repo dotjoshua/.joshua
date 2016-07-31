@@ -1,5 +1,7 @@
 var jsh = {
     Alert: function(args) {
+        if (!jsh.config.alert) throw new ReferenceError("jsh.Alert is not configured.");
+
         this.args = args || {};
         this.args.message = this.args.message || "";
         this.args.title = this.args.title || "";
@@ -43,12 +45,14 @@ var jsh = {
     },
 
     Page: function(args) {
+        if (!jsh.config.pages) throw new ReferenceError("jsh.Page is not configured.");
+
         this.args = args || {};
         this.args.name = this.args.name || "";
         this.args.content = this.args.content || document.createElement("div");
 
         this.name = this.args.name;
-        this.div = args.div;
+        this.div = this.args.div;
 
         if (!this.div) {
             this.div = document.createElement("div");
@@ -224,15 +228,24 @@ var jsh = {
         }
     },
 
-    cm: function() {
+    cm: function(config) {
+        jsh.config = config ? config : jsh.config ? jsh.config : {
+            alert: true,
+            pages: true
+        };
+
         jsh.__init__.general();
-        jsh.__init__.alert();
-        jsh.__init__.pages();
+        if (jsh.config.alert) jsh.__init__.alert();
+        if (jsh.config.pages) jsh.__init__.pages();
     }
 };
 
-var jsh_window_onload = window.onload;
-window.onload = function() {
-    jsh.cm();
-    if (jsh_window_onload) jsh_window_onload();
-};
+window.addEventListener("DOMContentLoaded", function() {
+    jsh.cm({
+        pages: true
+    });
+});
+
+window.addEventListener("DOMContentLoaded", function() {
+    if (!jsh.config) jsh.cm();
+});
