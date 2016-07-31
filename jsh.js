@@ -281,6 +281,8 @@ var jsh = new function() {
 
         if (this.config.alert) this.__init__.alert();
         if (this.config.pages) this.__init__.pages();
+
+        this.trigger("ready");
     }
 }();
 
