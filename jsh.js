@@ -1,6 +1,6 @@
-var jsh = {
-    Alert: function(args) {
-        if (!jsh.config.alert) throw new ReferenceError("jsh.Alert is not configured.");
+var jsh = new function() {
+    this.Alert = function(args) {
+        if (!jsh.config.alert) throw new jsh.JshError("jsh.Alert is not configured.");
 
         this.args = args || {};
         this.args.message = this.args.message || "";
@@ -32,6 +32,8 @@ var jsh = {
             jsh.get("#jsh_alert_cancel").onclick = this.args["cancel_callback"] || this.close;
 
             jsh.get("#content").classList.add("jsh_blurred");
+
+            jsh.trigger("alert_open", {alert: this});
         };
 
         this.close = function() {
@@ -41,11 +43,13 @@ var jsh = {
             }, 500);
 
             jsh.get("#content").classList.remove("jsh_blurred");
-        };
-    },
 
-    Page: function(args) {
-        if (!jsh.config.pages) throw new ReferenceError("jsh.Page is not configured.");
+            jsh.trigger("alert_close", {alert: this});
+        };
+    };
+
+    this.Page = function(args) {
+        if (!jsh.config.pages) throw new this.JshError("jsh.Page is not configured.");
 
         this.args = args || {};
         this.args.name = this.args.name || "";
@@ -56,7 +60,7 @@ var jsh = {
 
         if (!this.div) {
             this.div = document.createElement("div");
-            this.div.id = jsh.str("page_{}", this.args.name);
+            this.div.id = this.str("page_{}", this.args.name);
             this.div.classList.add("page");
             this.div.classList.add("jsh_transparent");
             this.div.classList.add("jsh_display_none");
@@ -87,10 +91,13 @@ var jsh = {
                     target_page.div.classList.remove("jsh_transparent");
                 }, 10)
             }, 500);
-        }
-    },
 
-    Request: function(args) {
+            window.location.hash = this.name;
+            jsh.trigger("page_open", {page: this})
+        }
+    };
+
+    this.Request = function(args) {
         this.args = args || {};
         this.args.url = this.args.url || "";
         this.args.data = this.args.data || {};
@@ -145,19 +152,23 @@ var jsh = {
             this.args.post = true;
             this.send();
         }
-    },
+    };
 
-    str: function() {
-        var result = arguments[0];
+    this.JshError = function(message) {
+        this.name = "JshError";
+        this.message = message || "";
+        this.stack = (new Error()).stack;
+    };
 
-        for (var i = 1; i < arguments.length; i++) {
-            result = result.replace("{}", arguments[i]);
-        }
+    this.addEventListener = function(a, b, c) {this.__el__.addEventListener(a, b, c)};
 
-        return result;
-    },
+    this.trigger = function(type, details) {
+        var event = new CustomEvent(type, {detail: details});
+        this.__el__.dispatchEvent(event);
+        return event;
+    };
 
-    get: function(selector) {
+    this.get = function(selector) {
         if (selector[0] == "#") {
             return document.getElementById(selector.substr(1));
         } else if (selector[0] == ".") {
@@ -165,18 +176,22 @@ var jsh = {
         } else {
             return document.getElementsByTagName(selector);
         }
-    },
+    };
 
-    __init__: {
-        general: function() {
-            if (!jsh.get("#content")) {
-                var content = document.createElement("div");
-                content.id = "content";
-                document.body.appendChild(content);
-            }
-        },
+    this.str = function() {
+        var result = arguments[0];
 
-        alert: function() {
+        for (var i = 1; i < arguments.length; i++) {
+            result = result.replace("{}", arguments[i]);
+        }
+
+        return result;
+    };
+
+    this.__el__ = document.createElement("div");
+
+    this.__init__ = new function() {
+        this.alert = function() {
             var container = document.createElement("div");
             container.id = "jsh_alert_container";
             container.classList.add("jsh_transparent");
@@ -209,9 +224,9 @@ var jsh = {
             window.appendChild(buttons);
             container.appendChild(window);
             document.body.appendChild(container);
-        },
+        };
 
-        pages: function() {
+        this.pages = function() {
             jsh.pages = {};
 
             var pages = jsh.get("#content").children;
@@ -225,20 +240,49 @@ var jsh = {
                     div: pages[i]
                 });
             }
-        }
-    },
 
-    cm: function(config) {
-        jsh.config = config ? config : jsh.config ? jsh.config : {
+            var on_hash_change = function() {
+                var target_page_name;
+                if (location.href.indexOf('#') != -1) {
+                    target_page_name = (location.href.substring(location.href.indexOf("#") + 1));
+                } else {
+                    target_page_name = "home";
+                }
+
+                var target_page = jsh.pages[target_page_name];
+                if (!target_page) {
+                    jsh.trigger("page_open");
+                } else {
+                    target_page.open();
+                }
+            };
+
+            if ("onhashchange" in window) {
+                window.addEventListener("hashchange", on_hash_change);
+            }
+            on_hash_change();
+        }
+    }();
+
+    this.cm = function(config) {
+        this.config = config ? config : this.config ? this.config : {
             alert: true,
             pages: true
         };
 
-        jsh.__init__.general();
-        if (jsh.config.alert) jsh.__init__.alert();
-        if (jsh.config.pages) jsh.__init__.pages();
+        if (!this.get("#content")) {
+            var content = document.createElement("div");
+            content.id = "content";
+            document.body.appendChild(content);
+        }
+
+        this.JshError.prototype = Object.create(Error.prototype);
+        this.JshError.prototype.constructor = this.JshError;
+
+        if (this.config.alert) this.__init__.alert();
+        if (this.config.pages) this.__init__.pages();
     }
-};
+}();
 
 window.addEventListener("DOMContentLoaded", function() {
     if (!jsh.config) jsh.cm();
