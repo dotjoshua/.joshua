@@ -241,11 +241,5 @@ var jsh = {
 };
 
 window.addEventListener("DOMContentLoaded", function() {
-    jsh.cm({
-        pages: true
-    });
-});
-
-window.addEventListener("DOMContentLoaded", function() {
     if (!jsh.config) jsh.cm();
 });
