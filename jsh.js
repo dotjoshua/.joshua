@@ -233,7 +233,7 @@ var jsh = new function() {
             for (var i = 0; i < pages.length; i++) {
                 if (!pages[i].classList.contains("page")) continue;
 
-                var name = pages[i].id.length > 5 ? pages[i].id.slice(5) : "";
+                var name = pages[i].id.length > 5 ? pages[i].id.slice(0, -5) : "";
 
                 new jsh.Page({
                     name: name,
